@@ -1,0 +1,24 @@
+[submodule "vim/pack/dist/start/nerdtree.git"]
+	path = vim/pack/dist/start/nerdtree.git
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "vim/pack/dist/start/ack.vim.git"]
+	path = vim/pack/dist/start/ack.vim.git
+	url = https://github.com/mileszs/ack.vim.git
+[submodule "vim/pack/dist/start/vim-unimpaired.git"]
+	path = vim/pack/dist/start/vim-unimpaired.git
+	url = https://github.com/tpope/vim-unimpaired.git
+[submodule "vim/pack/dist/start/vim-airline.git"]
+	path = vim/pack/dist/start/vim-airline.git
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "vim/pack/dist/start/base16-vim.git"]
+	path = vim/pack/dist/start/base16-vim.git
+	url = https://github.com/chriskempson/base16-vim.git
+[submodule "vim/pack/dist/start/vim-gitgutter.git"]
+	path = vim/pack/dist/start/vim-gitgutter.git
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "vim/pack/dist/start/fzf.vim.git"]
+	path = vim/pack/dist/start/fzf.vim.git
+	url = https://github.com/junegunn/fzf.vim.git
+[submodule "vim/pack/dist/start/fzf.git"]
+	path = vim/pack/dist/start/fzf.git
+	url = https://github.com/junegunn/fzf.git

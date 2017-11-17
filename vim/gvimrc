@@ -1,0 +1,233 @@
+set noballooneval
+let g:syntastic_enable_balloons = 0
+
+if has("gui_macvim")
+    set guioptions=egmrt
+    set macmeta
+endif
+
+
+if has("gui_macvim")
+
+  " Command-Shift-F for Ack
+  imap <D-F> <Esc>viwy<Esc>:Ack!<Space>"<C-r>""
+  map <D-F> <Esc>viwy:Ack!<space>"<C-r>""
+  vmap <D-F> y<Esc>:Ack!<space>"<C-r>""
+
+
+  " map Command-Shift-5 (Command-%) for search replace pattern
+  vmap <D-%> y<Esc>:%s/<C-r>"/
+  map <D-%> viwy<Esc>:%s/<C-r>"/
+  imap <D-%> <Esc>viwy<Esc>:%s/<C-r>"/
+
+  " map Alt-/ to remove highlited search results (nohl)
+  nn <M-/> :nohl<CR>
+  vn <M-/> :nohl<CR>
+  ino <M-/> <C-o>:nohl<CR>
+
+  " Command-d to delete line
+  imap <D-d> <Esc>ddi
+  map <D-d> dd
+
+  " Command-Option-ArrowKey to switch viewports (insert mode fix)
+  imap <D-M-Up> <C-o><C-w>k
+  imap <D-M-Down> <C-o><C-w>j
+  imap <D-M-Right> <C-o><C-w>l
+  imap <D-M-Left> <C-o><C-w>h
+
+
+  " Command-Shift-[hjkl] to switch viewports
+  map <D-K> <C-w>k
+  imap <D-K> <C-o><C-w>k
+  map <D-J> <C-w>j
+  imap <D-J> <C-o><C-w>j
+  map <D-L> <C-w>l
+  imap <D-L> <C-o><C-w>l
+  map <D-H> <C-w>h
+  imap <D-H> <C-o><C-w>h
+
+  " Ctrl [hjkl] to move in buffers
+  map <C-h> h
+  imap <C-h> <C-o>h
+  map <C-j> j
+  imap <C-j> <C-o>j
+  map <C-k> k
+  imap <C-k> <C-o>k
+  map <C-l> l
+  imap <C-l> <C-o>a
+
+
+  " start a new line now!
+  imap <C-CR> <C-o>$<CR>
+
+
+  " Remap select text (alt shift [left/right]) to visual commands B/E
+  nn   <S-M-Left> vb<C-g>
+  vn   <S-M-Left> b<C-g>
+  ino  <S-M-Left> <Esc>vb<C-g>
+  nn   <S-M-Right> ve<C-g>
+  vn   <S-M-Right> e<C-g>
+  ino  <S-M-Right> <Esc>ve<C-g>
+
+
+  " map Tagbar Toggle
+  map <D-y> :TagbarToggle<CR>
+  imap <D-y> <Esc>:TagbarToggle<CR>
+
+else
+  " Ctrl-Shift-F for Ack
+  map <C-F> :Ack!<space>
+  vmap <C-F> y<Esc>:Ack!<space>"<C-r>""
+endif
+map <M-,> :NERDTreeFind<CR>
+imap <M-,> <Esc>:NERDTreeFind<CR>
+autocmd BufNewFile,BufRead *.html.erb set filetype=eruby.html
+autocmd BufNewFile,BufRead *.cap set filetype=ruby
+
+map <D-Bslash> :NERDTreeToggle<CR>
+imap <D-Bslash> <Esc>:NERDTreeToggle<CR>
+
+map <D-Bar> :NERDTreeFind<CR>
+imap <D-Bar> <Esc>:NERDTreeFind<CR>
+
+map <D-r> :CtrlPBufTag<CR>
+imap <D-r> <Esc>:CtrlPBufTag<CR>
+
+map <D-R> :CtrlPTag<CR>
+imap <D-R> <Esc>:CtrlPTag<CR>
+
+function! JanusGetProjectDirName()
+  let l:dirs= split(getcwd(),'/')
+  let l:project_index= len(l:dirs)-1
+  return l:dirs[l:project_index]
+endfunction
+
+function! JanusGitBranch()
+  let branch = system("git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* //'")
+  if branch != ''
+    return " / ".substitute(branch, '\n', '', 'g')
+  en
+  return ''
+endfunction
+
+function! JanusMacVimWindowTitle()
+  set titlelen=100
+  let &titlestring=  "[".JanusGetProjectDirName() .JanusGitBranch()."]\ "
+  autocmd BufNewFile,BufRead * let &titlestring=  "[".JanusGetProjectDirName() .JanusGitBranch()."]\ ".expand('%:t')
+endfunction
+
+
+if has("gui_macvim")
+  macmenu Edit.Find.Find\.\.\. key=<nop>
+  map <D-f> :CtrlPLine<CR>
+  imap <D-f> :CtrlPLine<CR>
+end
+
+function! PatchColorScheme()
+  highlight Cursor guifg=black guibg=#FF0080
+  highlight iCursor guifg=black guibg=#FF0080
+endfunction
+
+call PatchColorScheme()
+
+
+:cmap <F7> <C-\>eAppendSome()<CR>
+
+func! AppendSome()
+  let cmd = getcmdline() . " Some()"
+  " place the cursor on the )
+  call setcmdpos(strlen(cmd))
+  return cmd
+endfunc
+
+func! ClipBoardOrCursorWord()
+  let l:yank = getreg(0)
+  let l:clipboard = getreg("+")
+  if strlen(l:yank)>1
+    let l:search_for = l:yank
+  elseif strlen(l:clipboard) > 3
+    let l:search_for = l:clipboard
+    1+1
+  else
+    let l:search_for = ""
+  endif
+  return "<Esc>:Ack! ".search_for
+endfunc
+
+"adds a new keymapping on 'gT' that opens the selected file in a bg tab and
+"closes the tree
+
+" NERD TREE open selection in new tab using <CTRL+ENTER> or <SHIFT+ENTER>
+call NERDTreeAddKeyMap({ 'scope': 'FileNode', 'key': '<C-CR>', 'callback': 'NERDTreeCustomMapsOpenInFgTab', 'quickhelpText': 'open current file in new tab' })
+call NERDTreeAddKeyMap({ 'scope': 'FileNode', 'key': '<S-CR>', 'callback': 'NERDTreeCustomMapsOpenInFgTab', 'quickhelpText': 'open current file in new tab' })
+
+
+function! NERDTreeCustomMapsOpenInFgTab(fnode)
+  call a:fnode.open({'where' : 't'})
+endfunction
+
+autocmd bufenter * if (winnr("$") == 1 && tabpagenr('$') > 1 && exists("b:NERDTree") && exists("b:NERDTree.root")) | q | endif
+
+
+" NERD TREE UNFOCUS
+fun! s:TabLeaveHandler()
+  call s:SaveGlobalFocus()
+  call s:NERDTreeUnfocus()
+endfun
+
+fun! s:SaveGlobalFocus()
+  let s:is_nerdtree_globally_focused = s:IsCurrentWindowNERDTree()
+endfun
+
+fun! s:IsCurrentWindowNERDTree()
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+endfun
+
+fun! s:NERDTreeUnfocus()
+  " save current window so that it's focus can be restored after switching
+  " back to this tab
+  let t:NERDTreeTabLastWindow = winnr()
+  if s:IsCurrentWindowNERDTree()
+    let l:winNum = s:NextNormalWindow()
+    if l:winNum != -1
+      exec l:winNum.'wincmd w'
+    else
+      wincmd w
+    endif
+  endif
+endfun
+
+fun! s:NextNormalWindow()
+  let l:i = 1
+  while(l:i <= winnr('$'))
+    let l:buf = winbufnr(l:i)
+
+    " skip unlisted buffers
+    if buflisted(l:buf) == 0
+      let l:i = l:i + 1
+      continue
+    endif
+
+    " skip un-modifiable buffers
+    if getbufvar(l:buf, '&modifiable') != 1
+      let l:i = l:i + 1
+      continue
+    endif
+
+    " skip temporary buffers with buftype set
+    if empty(getbufvar(l:buf, "&buftype")) != 1
+      let l:i = l:i + 1
+      continue
+    endif
+
+    return l:i
+  endwhile
+  return -1
+endfun
+
+autocmd TabLeave * call <SID>TabLeaveHandler()
+
+set noballooneval
+set balloondelay=100000
+setlocal balloonexpr=
+let g:syntastic_enable_balloons = 0

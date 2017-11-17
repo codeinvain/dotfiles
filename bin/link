@@ -1,0 +1,4 @@
+ln -fs ~/dotfiles/vim ~/.vim
+ln -fs ~/dotfiles/vim/vimrc ~/.vimrc
+ln -fs ~/dotfiles/vim/gvimrc ~/.gvimrc
+

@@ -1,0 +1,294 @@
+
+" force save files when no permission
+cmap w!! %!sudo tee > /dev/null %
+
+
+if !has("gui_running")
+  set t_Co=256
+endif
+
+
+" Use Node.js for JavaScript interpretation
+let $JS_CMD='node'
+
+"spelling
+map <F5> :setlocal spell! spelllang=en_us<CR>
+
+" make uses real tabs
+au FileType make set noexpandtab
+
+
+" yank ring remapping
+let g:yankring_replace_n_pkey = '<m-p>'
+let g:yankring_replace_n_nkey = '<m-n>'
+
+
+" split current line at cursor location and add new tabbed line in between
+imap <S-CR> <CR><CR><Esc>ka<C-t>
+
+let mapleader = "\<Space>"
+
+let g:airline_theme='dark'
+packadd! matchit
+
+
+" color
+colorscheme base16-tomorrow-night
+"set cursorline
+
+" ctags
+
+function! DelTagOfFile(file)
+  let fullpath = a:file
+  let cwd = getcwd()
+  let tagfilename = cwd . "/tags"
+  let f = substitute(fullpath, cwd . "/", "", "")
+  let f = escape(f, './')
+  let cmd = 'LC_ALL=C sed -i "" -e "/' . f . '/d" "' . tagfilename . '"'
+  "echo cmd
+  let resp = system(cmd)
+  "echo resp
+endfunction
+
+function! UpdateTags()
+  let f = expand("%:p")
+  let cwd = getcwd()
+  let tagfilename = cwd . "/tags"
+  call DelTagOfFile(f)
+  let cmd = 'ctags -a -f ' . tagfilename . ' --c++-kinds=+p --fields=+iaS --extra=+q ' . '"' . f . '"'
+  "echo cmd
+  let resp = system(cmd)
+  "echo resp
+  "echo "DONE !"
+endfunction
+
+
+function! RegenerateCTags()
+  if !exists("g:ctags_regenerate_args")
+    let g:ctags_regenerate_args = ''
+  endif
+
+  let cmd = 'ctags --exclude=log --exclude=tmp --exclude=node_modules '. g:ctags_regenerate_args.' --exclude=.\* --extra=+f -R * '
+  echo cmd
+  let resp = system(cmd)
+  echo resp
+  echo "DONE !"
+endfunction
+
+map <Leader>rt :call RegenerateCTags()<CR>
+
+" easymotion mapping
+let g:EasyMotion_leader_key = '<Leader>]'
+
+" ruby embedded document highlight
+function! TextEnableCodeSnip(filetype,start,end,textSnipHl) abort
+  let ft=toupper(a:filetype)
+  let group='textGroup'.ft
+  if exists('b:current_syntax')
+    let s:current_syntax=b:current_syntax
+    " Remove current syntax definition, as some syntax files (e.g. cpp.vim)
+    " do nothing if b:current_syntax is defined.
+    unlet b:current_syntax
+  endif
+  execute 'syntax include @'.group.' syntax/'.a:filetype.'.vim'
+  try
+    execute 'syntax include @'.group.' after/syntax/'.a:filetype.'.vim'
+  catch
+  endtry
+  if exists('s:current_syntax')
+    let b:current_syntax=s:current_syntax
+  else
+    unlet b:current_syntax
+  endif
+  execute 'syntax region textSnip'.ft.'
+  \ matchgroup='.a:textSnipHl.'
+  \ start="'.a:start.'" end="'.a:end.'"
+  \ contains=@'.group
+endfunction
+"mysql embedded document highlight
+
+autocmd FileType,Syntax ruby :call TextEnableCodeSnip('mysql', "<<-SQL", "SQL", 'Comment')
+autocmd FileType,Syntax ruby :call TextEnableCodeSnip('javascript', "<<-JS", "JS", 'Comment')
+autocmd BufNewFile,BufRead Procfile,Procfile.dev setf yaml
+
+"au FileType javascript set dictionary+=$HOME/.janus/vim-node-dict/dict/node.dict
+
+let g:syntastic_html_tidy_ignore_errors = [
+    \"trimming empty <i>",
+    \"trimming empty <span>",
+    \"<input> proprietary attribute \"autocomplete\"",
+    \"proprietary attribute \"role\"",
+    \"proprietary attribute \"hidden\"",
+    \" proprietary attribute \"ng-" ,
+    \" proprietary attribute \"ui-"
+\]
+
+
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
+autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+
+let javascript_enable_domhtmlcss=1
+
+" CoffeeScript Tagbar
+"let g:tagbar_type_coffee = {
+    "\ 'ctagstype' : 'coffee',
+    "\ 'kinds'     : [
+        "\ 'm:methods',
+        "\ 'f:functions',
+    "\ ]
+"\ }
+
+
+"GitGutterDisable
+
+
+" SUPPORT VIM PROJECT FILES
+" enable per-directory .vimrc files
+set exrc
+" disable unsafe commands in local .vimrc files
+set secure
+let b:thisdir=expand("%:p:h")
+let b:vim=b:thisdir.'/.vimrc'
+if (filereadable(b:vim))
+  let b:vim=substitute(b:vim,' ','\\ ','g')
+  execute "source ".b:vim
+endif
+
+let g:jsx_ext_required = 0
+
+" use ag 'the silver searcher' instead of ack
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+"  set grepprg=ag\ --nogroup\ --nocolor
+
+endif
+
+
+
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_mode_map={'mode': 'active'}
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+
+
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+function! s:rubocop_line_errors()
+  let loclist = g:SyntasticLoclist.current()
+  let syntastic_private_messages = copy(loclist.messages(bufnr('')))
+  let line_number = line('.')
+  let line_errors = get(syntastic_private_messages, line_number, {})
+  return line_errors
+endfunction
+
+function! RubFix(aggressive,args)
+  let args = split(a:args,' ')
+  if (!empty(getbufvar(winbufnr('%'), "&bt")))
+    echo 'not a file buffer'
+    return 'not a file buffer'
+  endif
+  let cmd = 'rubocop -a'
+  if a:aggressive!='!'
+    if empty(args)
+      let styles  = ["Style/LeadingCommentSpace","Style/SpaceAfterColon","Style/SpaceAfterComma","Style/SpaceAfterMethodName","Style/SpaceAroundBlockParameters",
+            \ "Style/SpaceAroundEqualsInParameterDefault","Style/SpaceAroundKeyword","Style/SpaceAroundOperators","Style/SpaceBeforeBlockBraces",
+            \ "Style/SpaceBeforeComma","Style/SpaceBeforeComment","Style/SpaceBeforeFirstArg","Style/SpaceBeforeSemicolon","Style/SpaceInsideBlockBraces",
+            \ "Style/SpaceInsideBrackets","Style/SpaceInsideHashLiteralBraces","Style/SpaceInsideParens","Style/SpaceInsidePercentLiteralDelimiters",
+            \ "Style/SpaceInsideRangeLiteral","Style/EmptyLineAfterMagicComment","Style/EmptyLineBetweenDefs","Style/EmptyLines",
+            \ "Style/EmptyLinesAroundAccessModifier","Style/EmptyLinesAroundBlockBody","Style/EmptyLinesAroundClassBody","Style/EmptyLinesAroundExceptionHandlingKeywords",
+            \ "Style/EmptyLinesAroundMethodBody","Style/EmptyLinesAroundModuleBody", "Style/TrailingCommaInLiteral", "Style/TrailingCommaInArguments",
+            \ "Style/TrailingUnderscoreVariable", "Style/TrailingWhitespace" , "Style/TrailingBlankLines", "Style/ExtraSpacing"
+            \ ]
+    else
+      let styles = []
+      for command in args
+        if command=='setup' || command=='init'
+          let rubocop_files_count = system('ls -l .rubocop.yml | wc -l')
+          if rubocop_files_count =~ '\w*0\w*'
+            call system('echo "\nAllCops:\n  DisplayCopNames: true\n" > .rubocop.yml')
+          else
+            let rubocop_content = system('cat .rubocop.yml')
+            if rubocop_content !~ '\w*DisplayCopNames:\w*'
+              call system('echo "\nAllCops:\n  DisplayCopNames: true\n" >> .rubocop.yml')
+            else
+              echo 'rubocop.yml already contains init rules'
+            endif
+          end
+          return
+        elseif command=='ignore' || command=='add'
+          let line_errors = s:rubocop_line_errors()
+          if !empty(line_errors)
+            for err in line_errors
+              let rubocop_rule = split(err['text'],':')[0]
+              if rubocop_rule =~ '^Style\/'
+                call system('echo "\n'.rubocop_rule.':\n  Enabled: false\n" >> .rubocop.yml')
+                echo "Style rule added to .rubocop.yml"
+              elseif rubocop_rule =~ '^Lint\/'
+                call system('echo "\n'.rubocop_rule.':\n  Enabled: false\n" >> .rubocop.yml')
+                echo "Lint rule added to .rubocop.yml"
+              elseif rubocop_rule =~ '^Metrics\/'
+                "let rule_value = matchstr(err['text'], '\[[0-9]\+')
+                call system('echo "\n'.rubocop_rule.':\n  Enabled: false\n" >> .rubocop.yml')
+                echo "Metric rule added to .rubocop.yml"
+              else
+                echo "don't know how to parse the rule"
+              end
+            endfor
+          endif
+          execute 'w'
+          return
+        end
+        if command=='error' || command=='err' || command=='this' || command=='current' " get current line errors
+          let line_errors = s:rubocop_line_errors()
+          if !empty(line_errors)
+            for err in line_errors
+              let rubocop_rule = split(err['text'],':')[0]
+              call add(styles,rubocop_rule)
+            endfor
+          endif
+        else
+          call add(styles,command)
+        end
+      endfor
+    endif
+    if empty(styles)
+      echo "didn't find rubucop errors on current line"
+      return
+    endif
+    let cmd = cmd.' --only '.join(styles,',')
+  endif
+
+  let cmd = cmd.' '.expand('%:pj')
+  execute 'w'
+  "echo cmd
+  let resp = system(cmd)
+  "echo resp
+  edit!
+  execute 'w'
+endfunction
+command! -bang -nargs=* RubFix call RubFix('<bang>', <q-args>)
+function! JsonFormat()
+ execute '%!python -m json.tool'
+endfunction
+command! JsonFormat call JsonFormat()
+
+
+if 0 " NERDTree {{{
+
+
+let g:NERDTreeHijackNetrw=1
+let g:nerdtree_tabs_autoclose=0
+
+augroup AuNERDTreeCmd
+autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
+autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
+
+endif " }}}
