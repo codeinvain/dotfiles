@@ -2,16 +2,17 @@
 
 if ARGV[0] == 'add'
 	repo_path = ARGV[1]
+	repo_path = "https://github.com/#{repo_path}" unless repo_path.include? '://'
 	plug_name= repo_path.split('/').last
 	dist_path = "vim/pack/dist/start/#{plug_name}"
-	`git submodule add #{repo_path} #{dist_path} `
+	puts `git submodule add #{repo_path} #{dist_path} `
 	`git add .gitmodules #{dist_path} `
 elsif ARGV[0] =='remove'
 	repo_path = ARGV[1]
 	plug_name= repo_path.split('/').last
 	dist_path = "vim/pack/dist/start/#{plug_name}"
 	`git submodule deinit -f #{dist_path}`
-	`git rm -f #{dist_path}`
+	puts `git rm -f #{dist_path}`
 	`rm -Rf .git/modules/#{dist_path}`
 elsif ARGV[0] =='ls'
 	dist_path = "vim/pack/dist/start"

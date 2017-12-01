@@ -1,10 +1,32 @@
+" autocmd VimEnter * wincmd e
 
 " force save files when no permission
 cmap w!! %!sudo tee > /dev/null %
 
+" show line number
+set number
 
+" incremental search
+set incsearch
+
+" highlight selected search term
+set hlsearch
+
+" set indentation
+set smartindent
+set autoindent
+
+" moved temp/swap files tom /tmp dir
+set backupdir=/tmp
+set directory=/tmp
+
+" don't wrap lines
+set nowrap
 if !has("gui_running")
   set t_Co=256
+  let &t_Co=256
+  syntax enable
+
 endif
 
 
@@ -15,7 +37,9 @@ let $JS_CMD='node'
 map <F5> :setlocal spell! spelllang=en_us<CR>
 
 " make uses real tabs
-au FileType make set noexpandtab
+" au FileType make set noexpandtab
+set noexpandtab
+set expandtab ts=2 sw=2 ai
 
 
 " yank ring remapping
@@ -26,14 +50,14 @@ let g:yankring_replace_n_nkey = '<m-n>'
 " split current line at cursor location and add new tabbed line in between
 imap <S-CR> <CR><CR><Esc>ka<C-t>
 
-let mapleader = "\<Space>"
+" let mapleader = "\<Space>"
 
 let g:airline_theme='dark'
 packadd! matchit
 
 
 " color
-colorscheme base16-tomorrow-night
+colorscheme tomorrow-night
 "set cursorline
 
 " ctags
@@ -113,17 +137,6 @@ autocmd BufNewFile,BufRead Procfile,Procfile.dev setf yaml
 
 "au FileType javascript set dictionary+=$HOME/.janus/vim-node-dict/dict/node.dict
 
-let g:syntastic_html_tidy_ignore_errors = [
-    \"trimming empty <i>",
-    \"trimming empty <span>",
-    \"<input> proprietary attribute \"autocomplete\"",
-    \"proprietary attribute \"role\"",
-    \"proprietary attribute \"hidden\"",
-    \" proprietary attribute \"ng-" ,
-    \" proprietary attribute \"ui-"
-\]
-
-
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
@@ -149,8 +162,10 @@ set exrc
 " disable unsafe commands in local .vimrc files
 set secure
 let b:thisdir=expand("%:p:h")
+let b:homedir=expand('<sfile>:p:h')
 let b:vim=b:thisdir.'/.vimrc'
-if (filereadable(b:vim))
+
+if (filereadable(b:vim) && (b:thisdir!=b:homedir))
   let b:vim=substitute(b:vim,' ','\\ ','g')
   execute "source ".b:vim
 endif
@@ -170,16 +185,6 @@ endif
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
-let g:syntastic_mode_map={'mode': 'active'}
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-
-
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
 
 function! s:rubocop_line_errors()
   let loclist = g:SyntasticLoclist.current()
@@ -276,19 +281,70 @@ function! RubFix(aggressive,args)
 endfunction
 command! -bang -nargs=* RubFix call RubFix('<bang>', <q-args>)
 function! JsonFormat()
- execute '%!python -m json.tool'
+  execute '%!python -m json.tool'
+  set filetype=json
 endfunction
 command! JsonFormat call JsonFormat()
 
 
-if 0 " NERDTree {{{
 
 
-let g:NERDTreeHijackNetrw=1
-let g:nerdtree_tabs_autoclose=0
+" if 0 " NERDTree {{{
 
-augroup AuNERDTreeCmd
-autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
-autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
+  let g:NERDTreeHijackNetrw=1
+  let g:nerdtree_tabs_autoclose=0
 
-endif " }}}
+  autocmd StdinReadPre * let s:std_in=1
+  " open NERDTree window if vim arg is a directory
+  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTreeToggle' argv()[0] | wincmd p |e | wincmd p| endif
+  " close buffer if its the last buffer in tab
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+
+
+  let NERDTreeMinimalUI = 1
+  let NERDTreeDirArrows = 1
+
+
+" endif " }}}
+
+" if 0 " vim-commentary {{{
+  autocmd FileType ruby set commentstring=#\ %s
+  imap <D-/> <Esc>gccji
+  nmap <D-/> gccj
+  vmap <D-/> gcc
+
+" endif " }}}
+
+" if 0 " ZFZ {{{
+  " find files (a-la ctrl-p)
+nnoremap <silent> <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+" find tags
+nnoremap <silent> <expr> <C-t> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Tags\<cr>"
+" find methods in current buffer
+nnoremap <silent> <expr> <C-m> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":BTags\<cr>"
+" find tags  in current buffer
+nnoremap <silent> <expr> <C-b> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Buffers\<cr>"
+
+" endif " }}}
+
+" if 0 " NeoComplete {{{
+let g:neocomplete#enable_at_startup = 1
+inoremap <expr><Tab> pumvisible() ? "\<C-n>\<Esc>a" : "\<Tab>""
+
+" endif " }}}
+
+" if 0 " vim-ruby{{{
+set nocompatible      " We're running Vim, not Vi!
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
+" endif " }}}
+
+
+" if 0 " ale {{{
+let g:ale_fixers = {  'ruby': ['rubocop'] }
+let g:ale_enabled = 1
+" endif " }}}

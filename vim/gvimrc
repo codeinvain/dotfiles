@@ -1,12 +1,25 @@
 set noballooneval
-let g:syntastic_enable_balloons = 0
 
 if has("gui_macvim")
     set guioptions=egmrt
     set macmeta
+    " Switch to specific tab numbers with Command-number
+    noremap <D-1> :tabn 1<CR>
+    noremap <D-2> :tabn 2<CR>
+    noremap <D-3> :tabn 3<CR>
+    noremap <D-4> :tabn 4<CR>
+    noremap <D-5> :tabn 5<CR>
+    noremap <D-6> :tabn 6<CR>
+    noremap <D-7> :tabn 7<CR>
+    noremap <D-8> :tabn 8<CR>
+    noremap <D-9> :tabn 9<CR>
+    " Command-0 goes to the last tab
+    noremap <D-0> :tablast<CR>
 endif
 
+" if 0 " remap keyboard {{{
 
+" endif " }}}
 if has("gui_macvim")
 
   " Command-Shift-F for Ack
@@ -157,6 +170,8 @@ endfunc
 "adds a new keymapping on 'gT' that opens the selected file in a bg tab and
 "closes the tree
 
+" if 0 " NERDTree {{{
+
 " NERD TREE open selection in new tab using <CTRL+ENTER> or <SHIFT+ENTER>
 call NERDTreeAddKeyMap({ 'scope': 'FileNode', 'key': '<C-CR>', 'callback': 'NERDTreeCustomMapsOpenInFgTab', 'quickhelpText': 'open current file in new tab' })
 call NERDTreeAddKeyMap({ 'scope': 'FileNode', 'key': '<S-CR>', 'callback': 'NERDTreeCustomMapsOpenInFgTab', 'quickhelpText': 'open current file in new tab' })
@@ -227,7 +242,5 @@ endfun
 
 autocmd TabLeave * call <SID>TabLeaveHandler()
 
+" endif " }}}
 set noballooneval
-set balloondelay=100000
-setlocal balloonexpr=
-let g:syntastic_enable_balloons = 0

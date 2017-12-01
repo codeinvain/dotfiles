@@ -1,0 +1,1 @@
+--regex-javascript=/([A-Za-z0-9_$]+)[\t ]*\=[\t ]*\([^\)]*\)[\t ]*=>/\1/f,function/

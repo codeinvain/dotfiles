@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+@options = {}
+res = OptionParser.new do |opts|
+  opts.on('--vim') do |component|
+    Installer.instance.install_vim
+  end
+end.parse!
+
+class Installer
+  include Singelton
+  def has_brew?
+    `which brew`.present?
+  end
+
+  def brew_dependant
+    raise "must have homebrew installed" unless has_brew?
+  end
+
+
+  def install_vim
+    brew_dependant
+    puts `brew install macvim --with-cscope --with-lua --override-system-vim`
+  end
+end

@@ -10,9 +10,6 @@
 [submodule "vim/pack/dist/start/vim-airline.git"]
 	path = vim/pack/dist/start/vim-airline.git
 	url = https://github.com/vim-airline/vim-airline.git
-[submodule "vim/pack/dist/start/base16-vim.git"]
-	path = vim/pack/dist/start/base16-vim.git
-	url = https://github.com/chriskempson/base16-vim.git
 [submodule "vim/pack/dist/start/vim-gitgutter.git"]
 	path = vim/pack/dist/start/vim-gitgutter.git
 	url = https://github.com/airblade/vim-gitgutter.git
@@ -22,3 +19,78 @@
 [submodule "vim/pack/dist/start/fzf.git"]
 	path = vim/pack/dist/start/fzf.git
 	url = https://github.com/junegunn/fzf.git
+[submodule "vim/pack/dist/start/vim-commentary"]
+	path = vim/pack/dist/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "vim/pack/dist/start/ale"]
+	path = vim/pack/dist/start/ale
+	url = https://github.com/w0rp/ale
+[submodule "vim/pack/dist/start/tagbar"]
+	path = vim/pack/dist/start/tagbar
+	url = https://github.com/majutsushi/tagbar
+[submodule "vim/pack/dist/start/vim-fugitive"]
+	path = vim/pack/dist/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "vim/pack/dist/start/vim-gitgutter"]
+	path = vim/pack/dist/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule "vim/pack/dist/start/vim-multiple-cursors"]
+	path = vim/pack/dist/start/vim-multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors
+[submodule "vim/pack/dist/start/vim-rails.git"]
+	path = vim/pack/dist/start/vim-rails.git
+	url = https://github.com/tpope/vim-rails.git
+[submodule "vim/pack/dist/start/delimitMate.git"]
+	path = vim/pack/dist/start/delimitMate.git
+	url = https://github.com/Raimondi/delimitMate.git
+[submodule "vim/pack/dist/start/editorconfig-vim.git"]
+	path = vim/pack/dist/start/editorconfig-vim.git
+	url = https://github.com/editorconfig/editorconfig-vim.git
+[submodule "vim/pack/dist/start/vim-yaml-helper.git"]
+	path = vim/pack/dist/start/vim-yaml-helper.git
+	url = https://github.com/lmeijvogel/vim-yaml-helper.git
+[submodule "vim/pack/dist/start/vim-ragtag.git"]
+	path = vim/pack/dist/start/vim-ragtag.git
+	url = https://github.com/tpope/vim-ragtag.git
+[submodule "vim/pack/dist/start/vim-node"]
+	path = vim/pack/dist/start/vim-node
+	url = https://github.com/moll/vim-node
+[submodule "vim/pack/dist/start/vim-abolish.git"]
+	path = vim/pack/dist/start/vim-abolish.git
+	url = https://github.com/tpope/vim-abolish.git
+[submodule "vim/pack/dist/start/tabular.git"]
+	path = vim/pack/dist/start/tabular.git
+	url = https://github.com/godlygeek/tabular.git
+[submodule "vim/pack/dist/start/vim-textobj-function.git"]
+	path = vim/pack/dist/start/vim-textobj-function.git
+	url = https://github.com/kana/vim-textobj-function.git
+[submodule "vim/pack/dist/start/vim-textobj-function-javascript.git"]
+	path = vim/pack/dist/start/vim-textobj-function-javascript.git
+	url = https://github.com/thinca/vim-textobj-function-javascript.git
+[submodule "vim/pack/dist/start/vim-textobj-rubyblock.git"]
+	path = vim/pack/dist/start/vim-textobj-rubyblock.git
+	url = https://github.com/nelstrom/vim-textobj-rubyblock.git
+[submodule "vim/pack/dist/start/vim-textobj-user.git"]
+	path = vim/pack/dist/start/vim-textobj-user.git
+	url = https://github.com/kana/vim-textobj-user.git
+[submodule "vim/pack/dist/start/Wombat.git"]
+	path = vim/pack/dist/start/Wombat.git
+	url = https://github.com/vim-scripts/Wombat.git
+[submodule "vim/pack/dist/start/badwolf.git"]
+	path = vim/pack/dist/start/badwolf.git
+	url = https://github.com/sjl/badwolf.git
+[submodule "vim/pack/dist/start/vim-tomorrow-night-theme.git"]
+	path = vim/pack/dist/start/vim-tomorrow-night-theme.git
+	url = https://github.com/Ardakilic/vim-tomorrow-night-theme.git
+[submodule "vim/pack/dist/start/wombat256.vim.git"]
+	path = vim/pack/dist/start/wombat256.vim.git
+	url = https://github.com/vim-scripts/wombat256.vim.git
+[submodule "vim/pack/dist/start/neocomplete.vim.git"]
+	path = vim/pack/dist/start/neocomplete.vim.git
+	url = https://github.com/Shougo/neocomplete.vim.git
+[submodule "vim/pack/dist/start/vim-ruby"]
+	path = vim/pack/dist/start/vim-ruby
+	url = https://github.com/vim-ruby/vim-ruby
+[submodule "vim/pack/dist/start/vim-surround"]
+	path = vim/pack/dist/start/vim-surround
+	url = https://github.com/tpope/vim-surround
