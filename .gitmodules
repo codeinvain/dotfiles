@@ -34,9 +34,6 @@
 [submodule "vim/pack/dist/start/vim-gitgutter"]
 	path = vim/pack/dist/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter
-[submodule "vim/pack/dist/start/vim-multiple-cursors"]
-	path = vim/pack/dist/start/vim-multiple-cursors
-	url = https://github.com/terryma/vim-multiple-cursors
 [submodule "vim/pack/dist/start/vim-rails.git"]
 	path = vim/pack/dist/start/vim-rails.git
 	url = https://github.com/tpope/vim-rails.git
