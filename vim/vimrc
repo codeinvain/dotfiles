@@ -34,7 +34,7 @@ endif
 let $JS_CMD='node'
 
 "spelling
-map <F5> :setlocal spell! spelllang=en_us<CR>
+" map <F5> :setlocal spell! spelllang=en_us<CR>
 
 " make uses real tabs
 " au FileType make set noexpandtab
@@ -187,11 +187,23 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 function! s:rubocop_line_errors()
-  let loclist = g:SyntasticLoclist.current()
-  let syntastic_private_messages = copy(loclist.messages(bufnr('')))
-  let line_number = line('.')
-  let line_errors = get(syntastic_private_messages, line_number, {})
-  return line_errors
+  if (exists('g:SyntasticLoclist'))
+    let loclist = g:SyntasticLoclist.current()
+    let syntastic_private_messages = copy(loclist.messages(bufnr('')))
+    let line_number = line('.')
+    let line_errors = get(syntastic_private_messages, line_number, {})
+    return line_errors
+  elseif (exists('g:ale_buffer_info'))
+    let l:buf = bufnr('')
+    let l:info = get(g:ale_buffer_info, l:buf, {})
+    let l:loclist = get(l:info, 'loclist', [])
+    let l:pos = getcurpos()
+    let l:index = ale#util#BinarySearch(l:loclist, l:buf, l:pos[1], l:pos[2])
+    let l:loc = l:index >= 0 ? l:loclist[l:index] : {}
+    return [l:loc]
+  else
+    echo("No Plugin Support")
+  endif
 endfunction
 
 function! RubFix(aggressive,args)
@@ -322,7 +334,7 @@ nnoremap <silent> <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : ''
 " find tags
 nnoremap <silent> <expr> <C-t> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Tags\<cr>"
 " find methods in current buffer
-nnoremap <silent> <expr> <C-m> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":BTags\<cr>"
+nnoremap <silent> <expr> <C-o> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":BTags\<cr>"
 " find tags  in current buffer
 nnoremap <silent> <expr> <C-b> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Buffers\<cr>"
 
@@ -348,3 +360,20 @@ filetype plugin on    " Enable filetype-specific plugins
 let g:ale_fixers = {  'ruby': ['rubocop'] }
 let g:ale_enabled = 1
 " endif " }}}
+
+" use CTRL-N like vim multiple cursors (select text under curosr and run cgn)
+map <C-n> viwy/<C-R>"<CR>Ncgn
+imap <C-n> <Esc>viwy/<C-R>"<CR>Ncgn
+
+" move stuff around with ctrl+arrow key"
+
+" move word left and right
+imap <C-Right> <esc>viwxpgvlolo
+imap <C-left> <esc>viwxhPgvhoho
+map <C-Right> viwxpgvlolo
+map <C-left> viwxhPgvhoho
+vmap <C-Right> xpgvlolo
+vmap <C-left> xhPgvhoho
+" move line up and down
+imap <C-Up> <esc>YddkPi
+imap <C-Down> <esc>YddjPi

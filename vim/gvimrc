@@ -103,11 +103,6 @@ imap <D-Bslash> <Esc>:NERDTreeToggle<CR>
 map <D-Bar> :NERDTreeFind<CR>
 imap <D-Bar> <Esc>:NERDTreeFind<CR>
 
-map <D-r> :CtrlPBufTag<CR>
-imap <D-r> <Esc>:CtrlPBufTag<CR>
-
-map <D-R> :CtrlPTag<CR>
-imap <D-R> <Esc>:CtrlPTag<CR>
 
 function! JanusGetProjectDirName()
   let l:dirs= split(getcwd(),'/')
@@ -128,13 +123,6 @@ function! JanusMacVimWindowTitle()
   let &titlestring=  "[".JanusGetProjectDirName() .JanusGitBranch()."]\ "
   autocmd BufNewFile,BufRead * let &titlestring=  "[".JanusGetProjectDirName() .JanusGitBranch()."]\ ".expand('%:t')
 endfunction
-
-
-if has("gui_macvim")
-  macmenu Edit.Find.Find\.\.\. key=<nop>
-  map <D-f> :CtrlPLine<CR>
-  imap <D-f> :CtrlPLine<CR>
-end
 
 function! PatchColorScheme()
   highlight Cursor guifg=black guibg=#FF0080
