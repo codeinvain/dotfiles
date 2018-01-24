@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby -w
+#!/usr/bin/env ruby
 
 if ARGV[0] == 'add'
 	repo_path = ARGV[1]
@@ -17,10 +17,10 @@ elsif ARGV[0] =='remove'
 elsif ARGV[0] =='ls'
 	dist_path = "vim/pack/dist/start"
 	puts `ls #{dist_path}`
-else ARGV[0]=='init'
-	git submodule update --init --recursive
-else ARGV[0]=='update'
-	git submodule update --recursive
+elsif ARGV[0]=='init'
+	`git submodule update --init --recursive`
+elsif ARGV[0]=='update'
+	`git submodule update --recursive`
 else
 	puts "not supported", ARGV.join(' ')
 end

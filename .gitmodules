@@ -97,3 +97,6 @@
 [submodule "vim/pack/dist/start/YouCompleteMe"]
 	path = vim/pack/dist/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
+[submodule "vim/pack/dist/start/vim-javascript"]
+	path = vim/pack/dist/start/vim-javascript
+	url = https://github.com/pangloss/vim-javascript
