@@ -82,12 +82,18 @@
 [submodule "vim/pack/dist/start/wombat256.vim.git"]
 	path = vim/pack/dist/start/wombat256.vim.git
 	url = https://github.com/vim-scripts/wombat256.vim.git
-[submodule "vim/pack/dist/start/neocomplete.vim.git"]
-	path = vim/pack/dist/start/neocomplete.vim.git
-	url = https://github.com/Shougo/neocomplete.vim.git
 [submodule "vim/pack/dist/start/vim-ruby"]
 	path = vim/pack/dist/start/vim-ruby
 	url = https://github.com/vim-ruby/vim-ruby
 [submodule "vim/pack/dist/start/vim-surround"]
 	path = vim/pack/dist/start/vim-surround
 	url = https://github.com/tpope/vim-surround
+[submodule "vim/pack/dist/start/nvim-yarp"]
+	path = vim/pack/dist/start/nvim-yarp
+	url = https://github.com/roxma/nvim-yarp
+[submodule "vim/pack/dist/start/vim-hug-neovim-rpc"]
+	path = vim/pack/dist/start/vim-hug-neovim-rpc
+	url = https://github.com/roxma/vim-hug-neovim-rpc
+[submodule "vim/pack/dist/start/YouCompleteMe"]
+	path = vim/pack/dist/start/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe

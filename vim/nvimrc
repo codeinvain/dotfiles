@@ -1,8 +1,5 @@
-set noballooneval
-
-if has("gui_macvim")
+if has("nvim")
     set guioptions=egmrt
-    set macmeta
     " Switch to specific tab numbers with Command-number
     noremap <D-1> :tabn 1<CR>
     noremap <D-2> :tabn 2<CR>
@@ -16,12 +13,19 @@ if has("gui_macvim")
     " Command-0 goes to the last tab
     noremap <D-0> :tablast<CR>
 endif
+hi TabLineSel guibg=Black
 
+nnoremap <S-D-}> :tabn<CR>
+nnoremap <S-D-{> :tabp<CR>
+inoremap <S-D-}> <ESC>:tabn<CR>i
+inoremap <S-D-{> <ESC>:tabp<CR>i
 " if 0 " remap keyboard {{{
 
 " endif " }}}
-if has("gui_macvim")
+if has("nvim")
 
+  " set <alt-/> to remove highlight
+  map ÷ :nohl<CR>
   " Command-Shift-F for Ack
   imap <D-F> <Esc>viwy<Esc>:Ack!<Space>"<C-r>""
   map <D-F> <Esc>viwy:Ack!<space>"<C-r>""
@@ -33,6 +37,10 @@ if has("gui_macvim")
   map <D-%> viwy<Esc>:%s/<C-r>"/
   imap <D-%> <Esc>viwy<Esc>:%s/<C-r>"/
 
+  " map Alt-/ to remove highlited search results (nohl)
+  nn <M-/> :nohl<CR>
+  vn <M-/> :nohl<CR>
+  ino <M-/> <C-o>:nohl<CR>
 
   " Command-d to delete line
   imap <D-d> <Esc>ddi
@@ -157,9 +165,6 @@ endfunc
 " if 0 " NERDTree {{{
 
 " NERD TREE open selection in new tab using <CTRL+ENTER> or <SHIFT+ENTER>
-call NERDTreeAddKeyMap({ 'scope': 'FileNode', 'key': '<C-CR>', 'callback': 'NERDTreeCustomMapsOpenInFgTab', 'quickhelpText': 'open current file in new tab' })
-call NERDTreeAddKeyMap({ 'scope': 'FileNode', 'key': '<S-CR>', 'callback': 'NERDTreeCustomMapsOpenInFgTab', 'quickhelpText': 'open current file in new tab' })
-
 
 function! NERDTreeCustomMapsOpenInFgTab(fnode)
   call a:fnode.open({'where' : 't'})
@@ -227,4 +232,3 @@ endfun
 autocmd TabLeave * call <SID>TabLeaveHandler()
 
 " endif " }}}
-set noballooneval

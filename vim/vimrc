@@ -1,3 +1,5 @@
+set regexpengine=1
+
 " autocmd VimEnter * wincmd e
 
 " force save files when no permission
@@ -50,15 +52,28 @@ let g:yankring_replace_n_nkey = '<m-n>'
 " split current line at cursor location and add new tabbed line in between
 imap <S-CR> <CR><CR><Esc>ka<C-t>
 
-" let mapleader = "\<Space>"
+let mapleader = "\\"
 
 let g:airline_theme='dark'
-packadd! matchit
+if (!has('nvim'))
+  packadd! matchit
+endif
 
 
-" color
-colorscheme tomorrow-night
-"set cursorline
+" if 0 " colorscheme {{{
+colorscheme Tomorrow-Night
+
+function! PatchColorScheme()
+  highlight Cursor guifg=black guibg=#FF0080
+  highlight iCursor guifg=black guibg=#FF0080
+  set guicursor=n-v-c:block-Cursor
+  set guicursor+=i:ver100-iCursor
+  set guicursor+=n-v-c:blinkon0
+  set guicursor+=i:blinkwait10
+endfunction
+
+call PatchColorScheme()
+" endif " }}}
 
 " ctags
 
@@ -248,6 +263,9 @@ function! RubFix(aggressive,args)
               if rubocop_rule =~ '^Style\/'
                 call system('echo "\n'.rubocop_rule.':\n  Enabled: false\n" >> .rubocop.yml')
                 echo "Style rule added to .rubocop.yml"
+              elseif rubocop_rule =~ '^Naming\/'
+                call system('echo "\n'.rubocop_rule.':\n  Enabled: false\n" >> .rubocop.yml')
+                echo "Naming rule added to .rubocop.yml"
               elseif rubocop_rule =~ '^Lint\/'
                 call system('echo "\n'.rubocop_rule.':\n  Enabled: false\n" >> .rubocop.yml')
                 echo "Lint rule added to .rubocop.yml"
@@ -306,11 +324,12 @@ command! JsonFormat call JsonFormat()
   let g:NERDTreeHijackNetrw=1
   let g:nerdtree_tabs_autoclose=0
 
+  noremap <Leader><Leader> :NERDTreeFind<CR>
   autocmd StdinReadPre * let s:std_in=1
   " open NERDTree window if vim arg is a directory
-  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTreeToggle' argv()[0] | wincmd p |e | wincmd p| endif
+  " autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTreeToggle' argv()[0] | wincmd p |e | wincmd p| endif
   " close buffer if its the last buffer in tab
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+  " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
 
@@ -330,19 +349,23 @@ command! JsonFormat call JsonFormat()
 
 " if 0 " ZFZ {{{
   " find files (a-la ctrl-p)
-nnoremap <silent> <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+" nnoremap <silent> <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+nnoremap <silent> <expr> <C-p> ":Files\<cr>"
 " find tags
-nnoremap <silent> <expr> <C-t> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Tags\<cr>"
+" nnoremap <silent> <expr> <C-y> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Tags\<cr>"
+nnoremap <silent> <expr> <C-t> ":Tags\<cr>"
 " find methods in current buffer
-nnoremap <silent> <expr> <C-o> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":BTags\<cr>"
+" nnoremap <silent> <expr> <C-o> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":BTags\<cr>"
+nnoremap <silent> <expr> <C-o> ":BTags\<cr>"
 " find tags  in current buffer
-nnoremap <silent> <expr> <C-b> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Buffers\<cr>"
+" nnoremap <silent> <expr> <C-b> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Buffers\<cr>"
+nnoremap <silent> <expr> <C-b> ":Buffers\<cr>"
 
 " endif " }}}
 
 " if 0 " NeoComplete {{{
-let g:neocomplete#enable_at_startup = 1
-inoremap <expr><Tab> pumvisible() ? "\<C-n>\<Esc>a" : "\<Tab>""
+let g:deoplete#enable_at_startup = 1
+" inoremap <expr><Tab> pumvisible() ? "\<C-n>\<Esc>a" : "\<Tab>""
 
 " endif " }}}
 
@@ -377,3 +400,29 @@ vmap <C-left> xhPgvhoho
 " move line up and down
 imap <C-Up> <esc>YddkPi
 imap <C-Down> <esc>YddjPi
+
+" map Alt-/ to remove highlited search results (nohl)
+nn <M-/> :nohl<CR>
+vn <M-/> :nohl<CR>
+ino <M-/> <esc>:nohl<CR>
+
+" control-F for Ack
+imap <C-f> <Esc>viwy<Esc>:Ack!<Space>"<C-r>""<Left>
+map <C-f> <Esc>viwy:Ack!<space>"<C-r>""<Left>
+vmap <C-f> y<Esc>:Ack!<space>"<C-r>""<Left>
+
+
+" map Command-Shift-5 (Command-%) for search replace pattern
+vmap <C-8> y<Esc>:%s/<C-r>"/
+map <C-8> viwy<Esc>:%s/<C-r>"/
+imap <C-8> <Esc>viwy<Esc>:%s/<C-r>"/
+
+" map Controll-w to close current buffer / tab
+vmap <C-w>w <Esc>:q<CR>
+imap <C-w>w <Esc>:q<CR>
+map <C-w>w :q<CR>
+
+" map Controll-t to open a new tab
+vmap † <Esc>:tabnew<CR>
+imap † <Esc>:tabnew<CR>
+map † :tabnew<CR>

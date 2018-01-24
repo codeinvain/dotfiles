@@ -1,4 +1,7 @@
 ln -fs ~/dotfiles/vim ~/.vim
 ln -fs ~/dotfiles/vim/vimrc ~/.vimrc
 ln -fs ~/dotfiles/vim/gvimrc ~/.gvimrc
+ln -fs ~/dotfiles/vim/nvimrc ~/.nvimrc
 ln -fs ~/dotfiles/ctags.d ~/.ctags.d
+mkdir -p ~/.config/nvim
+ln -fs ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim

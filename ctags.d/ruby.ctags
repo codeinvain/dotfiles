@@ -1,0 +1,2 @@
+--regex-ruby=/l_enum[\t ]+:([A-Za-z0-9_$]+)[\t ]*,/\1/a,aliases/
+--regex-ruby=/l_enum_set[\t ]+:([A-Za-z0-9_$]+)[\t ]*,/\1/a,aliases/
