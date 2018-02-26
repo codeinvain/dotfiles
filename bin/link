@@ -5,3 +5,4 @@ ln -fs ~/dotfiles/vim/gvimrc ~/.gvimrc
 ln -fs ~/dotfiles/vim/nvimrc ~/.nvimrc
 mkdir -p ~/.config/nvim
 ln -fs ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
+ln -fs ~/dotfiles/eslintrc.json ~/.eslintrc.json
