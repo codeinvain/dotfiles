@@ -382,8 +382,10 @@ filetype plugin on    " Enable filetype-specific plugins
 " if 0 " ale {{{
 let g:ale_javascript_eslint_use_global=1
 let g:ale_javascript_eslint_executable= substitute(system('which eslint'), '\n\+$', '', '')
-let g:ale_fixers = {  'ruby': ['rubocop'] , 'javascript': ['eslint']}
-let g:ale_linters = {  'javascript': ['eslint']}
+" let g:ale_fixers = { 'javascript': ['eslint'] , 'ruby': ['rubocop']}
+let g:ale_linters = { 'ruby': ['rubocop'] ,'javascript': ['eslint'] }
+" let g:ale_ruby_rubocop_options = ' --only Layout,Lint'
+let g:ale_fix_on_save = 1
 let g:ale_enabled = 1
 " endif " }}}
 
@@ -429,3 +431,6 @@ map <C-w>w :q<CR>
 vmap † <Esc>:tabnew<CR>
 imap † <Esc>:tabnew<CR>
 map † :tabnew<CR>
+
+
+source ~/.vim/fzf_tags.vim
