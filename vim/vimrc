@@ -417,7 +417,7 @@ map <C-f> <Esc>viwy:Ack!<space>"<C-r>""<Left>
 vmap <C-f> y<Esc>:Ack!<space>"<C-r>""<Left>
 
 
-" map Command-Shift-5 (Command-%) for search replace pattern
+" map Command-8 (Command-%) for search replace pattern
 vmap <C-8> y<Esc>:%s/<C-r>"/
 map <C-8> viwy<Esc>:%s/<C-r>"/
 imap <C-8> <Esc>viwy<Esc>:%s/<C-r>"/
