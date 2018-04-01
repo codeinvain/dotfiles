@@ -42,6 +42,7 @@ let $JS_CMD='node'
 " au FileType make set noexpandtab
 set noexpandtab
 set expandtab ts=2 sw=2 ai
+set sessionoptions+=tabpages,globals
 
 
 " yank ring remapping
@@ -237,7 +238,7 @@ function! RubFix(aggressive,args)
             \ "Style/SpaceInsideRangeLiteral","Style/EmptyLineAfterMagicComment","Style/EmptyLineBetweenDefs","Style/EmptyLines",
             \ "Style/EmptyLinesAroundAccessModifier","Style/EmptyLinesAroundBlockBody","Style/EmptyLinesAroundClassBody","Style/EmptyLinesAroundExceptionHandlingKeywords",
             \ "Style/EmptyLinesAroundMethodBody","Style/EmptyLinesAroundModuleBody", "Style/TrailingCommaInLiteral", "Style/TrailingCommaInArguments",
-            \ "Style/TrailingUnderscoreVariable", "Style/TrailingWhitespace" , "Style/TrailingBlankLines", "Style/ExtraSpacing"
+            \ "Style/TrailingWhitespace" , "Style/TrailingBlankLines", "Style/ExtraSpacing"
             \ ]
     else
       let styles = []
@@ -318,6 +319,10 @@ command! JsonFormat call JsonFormat()
 
 
 
+
+" if 0 " Tagbar {{{
+noremap <Leader>; :TagbarOpenAutoClose<CR>
+" endif " }}}
 
 " if 0 " NERDTree {{{
 
@@ -422,15 +427,21 @@ vmap <C-8> y<Esc>:%s/<C-r>"/
 map <C-8> viwy<Esc>:%s/<C-r>"/
 imap <C-8> <Esc>viwy<Esc>:%s/<C-r>"/
 
-" map Controll-w to close current buffer / tab
+" map Control-w to close current buffer / tab
 vmap <C-w>w <Esc>:q<CR>
 imap <C-w>w <Esc>:q<CR>
 map <C-w>w :q<CR>
 
-" map Controll-t to open a new tab
+" map Control-t to open a new tab
 vmap † <Esc>:tabnew<CR>
 imap † <Esc>:tabnew<CR>
 map † :tabnew<CR>
 
+" map Control-s to save file"
+nmap <C-s> :w<CR>
+vmap <C-s> <Esc><C-s>gv
+imap <C-s> <Esc><C-s>i
+
 
 source ~/.vim/fzf_tags.vim
+source ~/.vim/visual_put.vim

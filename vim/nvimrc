@@ -13,7 +13,10 @@ if has("nvim")
     " Command-0 goes to the last tab
     noremap <D-0> :tablast<CR>
 endif
-hi TabLineSel guibg=Black
+hi TabLine      ctermfg=Black  ctermbg=Green     cterm=NONE
+hi TabLineFill  ctermfg=Black  ctermbg=Green     cterm=NONE
+hi TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
+
 
 nnoremap <S-D-}> :tabn<CR>
 nnoremap <S-D-{> :tabp<CR>

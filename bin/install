@@ -3,9 +3,15 @@ require 'optparse'
 
 @options = {}
 res = OptionParser.new do |opts|
-  opts.on('--vim') do |component|
-    Installer.instance.install_vim
+  opts.on('-all') do |_|
+    Installer.instance.install_all
   end
+  # opts.on('--vim') do |_|
+  #   Installer.instance.install_vim
+  # end
+  # opts.on('--vimr') do |_|
+  #   Installer.instance.install_vimr
+  # end
 end.parse!
 
 class Installer
@@ -14,13 +20,54 @@ class Installer
     `which brew`.present?
   end
 
+  def install_all
+    install_submodules
+    install_youcompleteme
+    link_all
+    pid = Kernel.spawn({}, 'git submodule update --init --recursive')
+    Process.wait2(pid)
+  end
+
+  def link_all
+    pid = Kernel.spawn({}, 'bin/link')
+    Process.wait2(pid)
+  end
+
+  def install_submodules
+    pid = Kernel.spawn({}, 'git submodule update --init --recursive')
+    Process.wait2(pid)
+  end
+
+  def install_youcompleteme
+    install_universal_ctags
+    pid = Kernel.spawn({}, 'cd vim/pack/dist/start/YouCompleteMe ; install.sh')
+    Process.wait2(pid)
+  end
+
   def brew_dependant
     raise "must have homebrew installed" unless has_brew?
   end
 
+  def install_universal_ctags
+    brew_dependant
+
+    pid = Kernel.spawn({}, 'brew install --HEAD universal-ctags/universal-ctags/universal-ctags')
+    Process.wait2(pid)
+  end
 
   def install_vim
     brew_dependant
-    puts `brew install macvim --with-cscope --with-lua --override-system-vim`
+
+    pid = Kernel.spawn({}, 'brew install vim')
+    Process.wait2(pid)
   end
+
+  def install_vimr
+    brew_dependant
+
+    pid = Kernel.spawn({}, 'brew cask install vimr')
+    Process.wait2(pid)
+  end
+
+
 end

@@ -94,9 +94,12 @@
 [submodule "vim/pack/dist/start/vim-hug-neovim-rpc"]
 	path = vim/pack/dist/start/vim-hug-neovim-rpc
 	url = https://github.com/roxma/vim-hug-neovim-rpc
-[submodule "vim/pack/dist/start/YouCompleteMe"]
-	path = vim/pack/dist/start/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
 [submodule "vim/pack/dist/start/vim-javascript"]
 	path = vim/pack/dist/start/vim-javascript
 	url = https://github.com/pangloss/vim-javascript
+[submodule "vim/pack/dist/start/taboo.vim"]
+	path = vim/pack/dist/start/taboo.vim
+	url = https://github.com/gcmt/taboo.vim
+[submodule "vim/pack/dist/start/YouCompleteMe"]
+	path = vim/pack/dist/start/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe
