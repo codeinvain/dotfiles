@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
+require 'singleton'
+
 
 @options = {}
 res = OptionParser.new do |opts|
