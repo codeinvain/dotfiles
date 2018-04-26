@@ -1,23 +1,17 @@
 #!/usr/bin/env ruby
 require 'optparse'
 require 'singleton'
+require 'os'
 
-
-@options = {}
-res = OptionParser.new do |opts|
-  opts.on('-all') do |_|
-    Installer.instance.install_all
-  end
-  # opts.on('--vim') do |_|
-  #   Installer.instance.install_vim
-  # end
-  # opts.on('--vimr') do |_|
-  #   Installer.instance.install_vimr
-  # end
-end.parse!
 
 class Installer
-  include Singleton 
+  include Singleton
+  def mac?
+    RUBY_PLATFORM.include?('-darwin')
+  end
+  def linux?
+    RUBY_PLATFORM.include?('-linux-')
+  end
   def has_brew?
     `which brew`.present?
   end
@@ -51,15 +45,26 @@ class Installer
   end
 
   def install_universal_ctags
-    brew_dependant
+    if mac?
+      brew_dependant
+      pid = Kernel.spawn({}, 'brew install --HEAD universal-ctags/universal-ctags/universal-ctags')
+      Process.wait2(pid)
+    elsif linux?
+      script = <<-BASH
+        git clone https://github.com/universal-ctags/ctags.git
+        cd ctags
+        ./autogen.sh
+        ./configure
+        make
+        sudo make install
 
-    pid = Kernel.spawn({}, 'brew install --HEAD universal-ctags/universal-ctags/universal-ctags')
-    Process.wait2(pid)
+      BASH
+      pid = Kernel.spawn({}, script)
+    end
   end
 
   def install_vim
     brew_dependant
-
     pid = Kernel.spawn({}, 'brew install vim')
     Process.wait2(pid)
   end
@@ -70,6 +75,17 @@ class Installer
     pid = Kernel.spawn({}, 'brew cask install vimr')
     Process.wait2(pid)
   end
-
-
 end
+
+@options = {}
+res = OptionParser.new do |opts|
+  opts.on('--all') do |_|
+    Installer.instance.install_all
+  end
+  # opts.on('--vim') do |_|
+  #   Installer.instance.install_vim
+  # end
+  # opts.on('--vimr') do |_|
+  #   Installer.instance.install_vimr
+  # end
+end.parse!
