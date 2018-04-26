@@ -17,7 +17,7 @@ res = OptionParser.new do |opts|
 end.parse!
 
 class Installer
-  include Singelton
+  include Singleton 
   def has_brew?
     `which brew`.present?
   end
