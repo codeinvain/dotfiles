@@ -103,3 +103,12 @@
 [submodule "vim/pack/dist/start/YouCompleteMe"]
 	path = vim/pack/dist/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
+[submodule "vim/pack/dist/start/vim-toml"]
+	path = vim/pack/dist/start/vim-toml
+	url = https://github.com/cespare/vim-toml
+[submodule "vim/pack/dist/start/vim-monokai"]
+	path = vim/pack/dist/start/vim-monokai
+	url = https://github.com/sickill/vim-monokai
+[submodule "vim/pack/dist/start/vim-colors-solarized"]
+	path = vim/pack/dist/start/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized
