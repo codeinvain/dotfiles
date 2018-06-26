@@ -388,7 +388,9 @@ filetype plugin on    " Enable filetype-specific plugins
 let g:ale_javascript_eslint_use_global=1
 let g:ale_javascript_eslint_executable= substitute(system('which eslint'), '\n\+$', '', '')
 " let g:ale_fixers = { 'javascript': ['eslint'] , 'ruby': ['rubocop']}
-let g:ale_linters = { 'ruby': ['rubocop'] ,'javascript': ['eslint'] }
+let g:ale_linters = { 'ruby': ['rubocop'] ,'javascript': ['eslint'] ,'python': ['flake8', 'pylint']}
+let g:ale_fixers = { 'python': ['autopep8', 'yapf']}
+
 " let g:ale_ruby_rubocop_options = ' --only Layout,Lint'
 let g:ale_fix_on_save = 1
 let g:ale_enabled = 1
