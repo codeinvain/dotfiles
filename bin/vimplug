@@ -7,6 +7,7 @@ if ARGV[0] == 'add'
 	dist_path = "vim/pack/dist/start/#{plug_name}"
 	puts `git submodule add #{repo_path} #{dist_path} `
 	`git add .gitmodules #{dist_path} `
+	`cd #{dist_path} ; git submodule update --init --recursive`
 elsif ARGV[0] =='remove'
 	repo_path = ARGV[1]
 	plug_name= repo_path.split('/').last
