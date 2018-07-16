@@ -1,3 +1,4 @@
+
 if has("nvim")
     set guioptions=egmrt
     " Switch to specific tab numbers with Command-number
@@ -26,6 +27,10 @@ inoremap <S-D-{> <ESC>:tabp<CR>i
 
 " endif " }}}
 if has("nvim")
+
+  " let g:python_host_prog = '$HOME/.pyenv/shims/python'
+  " let g:python3_host_prog = '$HOME/.pyenv/shims/python3'
+
 
   " set <alt-/> to remove highlight
   map ÷ :nohl<CR>
@@ -163,7 +168,7 @@ func! ClipBoardOrCursorWord()
 endfunc
 
 "adds a new keymapping on 'gT' that opens the selected file in a bg tab and
-"closes the tree
+"
 
 " if 0 " NERDTree {{{
 

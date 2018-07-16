@@ -1,5 +1,6 @@
 set regexpengine=1
 
+"python3 import os
 
 " autocmd VimEnter * wincmd e
 
@@ -390,7 +391,11 @@ let g:ale_javascript_eslint_use_global=1
 let g:ale_javascript_eslint_executable= substitute(system('which eslint'), '\n\+$', '', '')
 " let g:ale_fixers = { 'javascript': ['eslint'] , 'ruby': ['rubocop']}
 let g:ale_linters = { 'ruby': ['rubocop'] ,'javascript': ['eslint'] ,'python': ['flake8', 'pylint']}
-let g:ale_fixers = { 'python': ['autopep8', 'yapf']}
+let g:ale_fixers = { 'python': ['autopep8','yapf'], 'javascript': ['eslint']}
+let g:ale_python_autopep8_options = '--aggressive'
+let b:ale_warn_about_trailing_whitespace = 0
+
+
 
 " let g:ale_ruby_rubocop_options = ' --only Layout,Lint'
 let g:ale_fix_on_save = 1
@@ -400,6 +405,9 @@ let g:ale_enabled = 1
 " use CTRL-N like vim multiple cursors (select text under curosr and run cgn)
 map <C-n> viwy/<C-R>"<CR>Ncgn
 imap <C-n> <Esc>viwy/<C-R>"<CR>Ncgn
+
+" use SHIFT-7 for case insensitive partial match (complementery to SHIFT-8 exact match)
+map & <Esc>viwy<Esc>/\c<C-r>"<CR>
 
 " move stuff around with ctrl+arrow key"
 
@@ -444,14 +452,6 @@ map † :tabnew<CR>
 nmap <C-s> :w<CR>
 vmap <C-s> <Esc><C-s>gv
 imap <C-s> <Esc><C-s>i
-
-" pymode plugin settings
-let g:pymode_python = 'python3'
-let g:pymode_options_max_line_length = 180
-let g:pymode_lint_options_pep8 = {'max_line_length': g:pymode_options_max_line_length}
-let g:pymode_options_colorcolumn=0
-let g:pymode_lint_cwindow = 0
-
 
 
 source ~/.vim/fzf_tags.vim

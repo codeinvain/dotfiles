@@ -112,6 +112,9 @@
 [submodule "vim/pack/dist/start/vim-colors-solarized"]
 	path = vim/pack/dist/start/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized
-[submodule "vim/pack/dist/start/python-mode"]
-	path = vim/pack/dist/start/python-mode
-	url = https://github.com/python-mode/python-mode
+[submodule "vim/pack/dist/start/vim-go"]
+	path = vim/pack/dist/start/vim-go
+	url = https://github.com/fatih/vim-go
+[submodule "vim/pack/dist/start/python-syntax"]
+	path = vim/pack/dist/start/python-syntax
+	url = https://github.com/vim-python/python-syntax
