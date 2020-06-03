@@ -9,6 +9,7 @@ cmap w!! %!sudo tee > /dev/null %
 
 " show line number
 set number
+set norelativenumber
 
 " incremental search
 set incsearch
@@ -23,7 +24,6 @@ set autoindent
 " moved temp/swap files tom /tmp dir
 set backupdir=/tmp
 set directory=/tmp
-
 " don't wrap lines
 set nowrap
 if !has("gui_running")
@@ -288,7 +288,8 @@ function! RubFix(aggressive,args)
           let line_errors = s:rubocop_line_errors()
           if !empty(line_errors)
             for err in line_errors
-              let rubocop_rule = split(err['text'],':')[0]
+              "echo err
+              let rubocop_rule = err['code']
               call add(styles,rubocop_rule)
             endfor
           endif
@@ -320,6 +321,10 @@ endfunction
 command! JsonFormat call JsonFormat()
 
 
+function! SingleLine()
+  execute '%s/[ |\t|\r|\n]//g'
+endfunction
+command! SingleLine call SingleLine()
 
 
 " if 0 " Tagbar {{{
@@ -389,15 +394,15 @@ filetype plugin on    " Enable filetype-specific plugins
 " if 0 " ale {{{
 let g:ale_javascript_eslint_use_global=1
 let g:ale_javascript_eslint_executable= substitute(system('which eslint'), '\n\+$', '', '')
-" let g:ale_fixers = { 'javascript': ['eslint'] , 'ruby': ['rubocop']}
+let g:ale_fixers = { 'javascript': ['eslint'] , 'ruby': ['rubocop']}
 let g:ale_linters = { 'ruby': ['rubocop'] ,'javascript': ['eslint'] ,'python': ['flake8', 'pylint']}
 let g:ale_fixers = { 'python': ['autopep8','yapf'], 'javascript': ['eslint']}
-let g:ale_python_autopep8_options = '--aggressive'
+let g:ale_python_autopep8_options = '--aggressive --max-line-length=120'
 let b:ale_warn_about_trailing_whitespace = 0
 
 
 
-" let g:ale_ruby_rubocop_options = ' --only Layout,Lint'
+let g:ale_ruby_rubocop_options = ' --only Layout,Lint'
 let g:ale_fix_on_save = 1
 let g:ale_enabled = 1
 " endif " }}}

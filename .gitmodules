@@ -100,9 +100,6 @@
 [submodule "vim/pack/dist/start/taboo.vim"]
 	path = vim/pack/dist/start/taboo.vim
 	url = https://github.com/gcmt/taboo.vim
-[submodule "vim/pack/dist/start/YouCompleteMe"]
-	path = vim/pack/dist/start/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
 [submodule "vim/pack/dist/start/vim-toml"]
 	path = vim/pack/dist/start/vim-toml
 	url = https://github.com/cespare/vim-toml
@@ -118,3 +115,16 @@
 [submodule "vim/pack/dist/start/python-syntax"]
 	path = vim/pack/dist/start/python-syntax
 	url = https://github.com/vim-python/python-syntax
+[submodule "vim/pack/dist/start/async.vim"]
+	path = vim/pack/dist/start/async.vim
+	url = https://github.com/prabirshrestha/async.vim
+[submodule "vim/pack/dist/start/vim-lsp"]
+	path = vim/pack/dist/start/vim-lsp
+	url = https://github.com/prabirshrestha/vim-lsp
+[submodule "vim/pack/dist/start/vim-jsonpath"]
+	path = vim/pack/dist/start/vim-jsonpath
+	url = https://github.com/mogelbrod/vim-jsonpath
+[submodule "vim/pack/dist/start/coc.nvim"]
+	path = vim/pack/dist/start/coc.nvim
+	url = https://github.com/neoclide/coc.nvim
+	branch = release
