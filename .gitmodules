@@ -10,9 +10,6 @@
 [submodule "vim/pack/dist/start/vim-airline.git"]
 	path = vim/pack/dist/start/vim-airline.git
 	url = https://github.com/vim-airline/vim-airline.git
-[submodule "vim/pack/dist/start/vim-gitgutter.git"]
-	path = vim/pack/dist/start/vim-gitgutter.git
-	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "vim/pack/dist/start/fzf.vim.git"]
 	path = vim/pack/dist/start/fzf.vim.git
 	url = https://github.com/junegunn/fzf.vim.git
@@ -31,9 +28,6 @@
 [submodule "vim/pack/dist/start/vim-fugitive"]
 	path = vim/pack/dist/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive
-[submodule "vim/pack/dist/start/vim-gitgutter"]
-	path = vim/pack/dist/start/vim-gitgutter
-	url = https://github.com/airblade/vim-gitgutter
 [submodule "vim/pack/dist/start/vim-rails.git"]
 	path = vim/pack/dist/start/vim-rails.git
 	url = https://github.com/tpope/vim-rails.git
@@ -128,3 +122,7 @@
 	path = vim/pack/dist/start/coc.nvim
 	url = https://github.com/neoclide/coc.nvim
 	branch = release
+[submodule "vim/pack/dist/start/vim-gitgutter"]
+	path = vim/pack/dist/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+	branch = master
