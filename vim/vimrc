@@ -51,6 +51,12 @@ set sessionoptions+=tabpages,globals
 let g:yankring_replace_n_pkey = '<m-p>'
 let g:yankring_replace_n_nkey = '<m-n>'
 
+" yank to clipboard
+" copy to clipboard all highlighted text in visual mode
+vmap <C-c> "*y  
+" copy to clipboard word under cursor in visual mode
+imap <C-c> <Esc>viw"*yi
+
 
 " split current line at cursor location and add new tabbed line in between
 imap <S-CR> <CR><CR><Esc>ka<C-t>
