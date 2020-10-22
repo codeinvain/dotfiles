@@ -25,7 +25,6 @@ class Installer
 
   def install_all
     install_submodules
-    install_youcompleteme
     link_all
     pid = Kernel.spawn({}, 'git submodule update --init --recursive')
     Process.wait2(pid)
@@ -41,11 +40,6 @@ class Installer
     Process.wait2(pid)
   end
 
-  def install_youcompleteme
-    install_universal_ctags
-    pid = Kernel.spawn({}, 'cd vim/pack/dist/start/YouCompleteMe ; /usr/bin/python ./install.py --js-completer --clang-completer')
-    Process.wait2(pid)
-  end
 
   def brew_dependant
     raise "must have homebrew installed" unless has_brew?
@@ -90,12 +84,7 @@ res = OptionParser.new do |opts|
   opts.on('--all') do |_|
     Installer.instance.install_all
   end
-
-
-  # opts.on('--vim') do |_|
-  #   Installer.instance.install_vim
-  # end
-  # opts.on('--vimr') do |_|
-  #   Installer.instance.install_vimr
-  # end
+  opts.on('--ctags') do |_|
+    Installer.instance.install_universal_ctags
+  end
 end.parse!
