@@ -23,8 +23,6 @@ elsif ARGV[0]=='init'
 	`git submodule update --init --recursive`
 elsif ARGV[0]=='update'
 	`git submodule update --recursive --remote; `
-	puts 'updating YouCompleteMe'
-	`cd vim/pack/dist/start/YouCompleteMe/; git submodule update --init --recursive; ./install.sh`
 else
 	puts "not supported", ARGV.join(' ')
 end
